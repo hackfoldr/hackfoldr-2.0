@@ -19,7 +19,7 @@ var foldr_scale = JSON.parse(localStorage.getItem("hackfoldr-scale")) || "";
 
 // check where the csv will come from, ethercalc or gsheet?
 if(ethercalc_name.length < 40){
-  csv_api_source = 'https://ethercalc.net/_/'+ethercalc_name+'/csv';
+  csv_api_source = 'https://ethercalc-cache.g0v.tw/_/'+ethercalc_name+'/csv';
   csv_api_source_type = "ethercalc";
 }else{
   csv_api_source = 'docs.google.com/feeds/download/spreadsheets/Export?key='+ethercalc_name+'&exportFormat=csv&gid=0';
