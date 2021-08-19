@@ -1,0 +1,18 @@
+version: '2'
+
+volumes:
+  # node_modules in hackfoldr service goes to this named volume
+  # so that local machine's node_modules are not messed up
+  # https://stackoverflow.com/a/38601156
+  node_modules:
+
+services:
+  hackfoldr:
+    build:
+      context: .
+    volumes:
+      - .:/srv
+      # node_modules will use named volume instead of the one under current directory
+      - node_modules:/srv/node_modules
+    ports:
+      - 3000:3000
