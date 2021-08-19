@@ -617,8 +617,8 @@ block script
         $.getJSON(csv_api_source).done(function (resp) {
           return compile_json(resp.values.map(function (row) {
             // Pad empty columns with '' so that each row contains exactly 4 items
-            return ['', '', '', ''].map( function (_, i) {
-              return typeof row[i] === 'undefined' ? '' : row[i];
+            return ['', '', '', ''].map( function (space, i) {
+              return typeof row[i] === 'undefined' ? space : row[i];
             });
           }));
         })
