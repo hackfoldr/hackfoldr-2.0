@@ -125,12 +125,15 @@ block script
     var foldr_histories = JSON.parse(localStorage.getItem("hackfoldr")) || [];
     var foldr_scale = JSON.parse(localStorage.getItem("hackfoldr-scale")) || "";
 
+    // API key from @mrorz in g0v slack
+    var GOOGLE_API_KEY = 'AIzaSyCQB8Ufy4k-PpYSq0wUoMSj_WtTyuLgIRY';
+
     // check where the csv will come from, ethercalc or gsheet?
     if(ethercalc_name.length < 40){
       csv_api_source = 'https://ethercalc-cache.g0v.tw/_/'+ethercalc_name+'/csv';
       csv_api_source_type = "ethercalc";
     }else{
-      csv_api_source = 'docs.google.com/feeds/download/spreadsheets/Export?key='+ethercalc_name+'&exportFormat=csv&gid=0';
+      csv_api_source = 'https://sheets.googleapis.com/v4/spreadsheets/'+ethercalc_name+'/values/A1:D?key='+GOOGLE_API_KEY;
       csv_api_source_type = "google";
       // because posting to gsheet is hard to implement, we don't offer submit feature when using gsheet. since it's easy to moderate editing in gsheet, you can just let users edit or comment on it.
       $("#topbar .add.to.list, #topbar .submit.segment").remove();
@@ -182,7 +185,7 @@ block script
       // jump from ethercalc to google spreadsheet when A1 is filled with a gsheet id
       if(csv_api_source_type == "ethercalc" && !rows[0][0].match(/^#/) && rows[0][0].length >= 40){
         // reset all related variables and compile again
-        csv_api_source = 'docs.google.com/feeds/download/spreadsheets/Export?key='+rows[0][0]+'&exportFormat=csv&gid=0';
+        csv_api_source = 'https://sheets.googleapis.com/v4/spreadsheets/'+rows[0][0]+'/values/A1:D?key='+GOOGLE_API_KEY;
         csv_api_source_type = "google";
         csv_api_source_id = rows[0][0].trim();
         // remember? we don't support submit forms with gsheet. so need to remove the + button as well as the form segment.
@@ -610,26 +613,15 @@ block script
         // compile ethercalc csv
         $.get(csv_api_source).pipe(CSV.parse).done(compile_json);
       }else{
-        // compile gsheet-tabletop json
-        Tabletop.init({
-          key: csv_api_source_id,
-          callback: function(data, tabletop){
-            var columnNames = tabletop.models[tabletop.model_names[0]].column_names
-            data = data.map(function (o) {
-              var result = ['', '', '', '', '']
-
-              columnNames.forEach(function(columnName, idx){
-                if(o[columnName]) {
-                  result[idx] = o[columnName];
-                }
-              });
-
-              return result;
+        // compile google sheet
+        $.getJSON(csv_api_source).done(function (resp) {
+          return compile_json(resp.values.map(function (row) {
+            // Pad empty columns with '' so that each row contains exactly 4 items
+            return ['', '', '', ''].map( function (_, i) {
+              return typeof row[i] === 'undefined' ? '' : row[i];
             });
-            compile_json(data);
-          },
-          simpleSheet: true
-        });
+          }));
+        })
       }
     };
 
