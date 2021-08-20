@@ -24,3 +24,9 @@ docker-compose up --build
 ## Build
 
 Build process is part of the dev process above, thus all the files for production build will be in `_public` already.
+
+To just build `_public` without running a server, use the following command:
+
+```bash
+docker-compose run --rm hackfoldr npm run build
+```
