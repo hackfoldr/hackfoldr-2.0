@@ -130,7 +130,7 @@ block script
 
     // check where the csv will come from, ethercalc or gsheet?
     if(ethercalc_name.length < 40){
-      csv_api_source = 'https://ethercalc-cache.g0v.tw/_/'+ethercalc_name+'/csv';
+      csv_api_source = 'https://ethercalc.net/_/'+ethercalc_name+'/csv';
       csv_api_source_type = "ethercalc";
     }else{
       csv_api_source = 'https://sheets.googleapis.com/v4/spreadsheets/'+ethercalc_name+'/values/A1:D?key='+GOOGLE_API_KEY;
