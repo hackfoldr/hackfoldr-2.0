@@ -142,7 +142,7 @@ block script
     // let user sort #toc menu by drag and drop, a very user friendly feature suggest by @ipa. using jquery ui sortable. (also, ethercalc only)
     var sort_ethercalc = function(sort_initial_row, sort_target_row){
       $.ajax({
-        url: "https://ethercalc.org/_/"+ethercalc_name,
+        url: "https://ethercalc.net/_/"+ethercalc_name,
         contentType: 'text/plain',
         data: 'moveinsert A'+sort_initial_row+':F'+sort_initial_row+' A'+sort_target_row,
         type: 'POST',
@@ -372,7 +372,7 @@ block script
         // set iframe src?
         if(current_iframe_url == "edit"){
           if(csv_api_source_type=="ethercalc"){
-            iframe_src = 'https://ethercalc.org/'+csv_api_source_id;
+            iframe_src = 'https://ethercalc.net/'+csv_api_source_id;
           }else{
             iframe_src = 'https://docs.google.com/spreadsheets/d/'+csv_api_source_id+'/edit';
           };
@@ -730,8 +730,8 @@ block script
     // prepare to post to ethercalc
     var post_ethercalc = function(post_title, post_url){
       $.ajax({
-        url: "https://ethercalc.org/_/"+ethercalc_name,
-        //url: "https://ethercalc.org/_/"+ethercalc_name+"?row="+new_pad_row_index.toString(),
+        url: "https://ethercalc.net/_/"+ethercalc_name,
+        //url: "https://ethercalc.net/_/"+ethercalc_name+"?row="+new_pad_row_index.toString(),
         type: 'POST',
         contentType: 'text/csv',
         processData: false,
@@ -860,7 +860,7 @@ block script
       // show sheet
       if(!hide_sheet){
         if(csv_api_source_type=="ethercalc"){
-          $("#topbar .edit.table").attr("href",'https://ethercalc.org/'+csv_api_source_id);
+          $("#topbar .edit.table").attr("href",'https://ethercalc.net/'+csv_api_source_id);
           // make foldr items sortable
           if(sort_sheet){
             $("#toc .sortable").sortable(sort_action);
